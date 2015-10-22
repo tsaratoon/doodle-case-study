@@ -9,8 +9,10 @@ object TestApp extends App{
   val canvas = Java2DCanvas.canvas
   canvas.setSize(400, 400)
   
-  Circle(50).draw(canvas)
+  val bottom = Circle(50)
+  val top = Rectangle(30,60)
   
-  Rectangle(30,60).draw(canvas)
+//  On(top,bottom).draw(canvas)
+  Beside(top,bottom).draw(canvas)
 
 }

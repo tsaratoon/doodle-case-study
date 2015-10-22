@@ -6,10 +6,12 @@ import doodle.core.Line.Cap
 import doodle.core.Line.Join
 import doodle.core.Stroke
 import doodle.core.Line
+import doodle.core.tsaratoon.BoundingBox
 
 object Image {
   
   sealed trait Image {
+    
     def on(that: Image): Image =
       On(this, that)
       
@@ -27,6 +29,35 @@ object Image {
       ???
   
     val defaultStroke = Stroke(3.0, Color.black, Line.Cap.Round, Line.Join.Round)
+    val defaultFill = Color.black
+    
+    def boundingBox: BoundingBox = {
+      this match {
+        case Circle(radius) =>
+          BoundingBox(-radius,radius,radius,-radius)
+        case Rectangle(width, height) =>
+          BoundingBox(-width/2,width/2,-height/2,height/2)
+        case Above(above,below) => 
+          BoundingBox(
+              above.boundingBox.left min below.boundingBox.left,
+              above.boundingBox.right min below.boundingBox.right,
+              above.boundingBox.top,
+              below.boundingBox.bottom)
+        case Beside(first,second) => 
+          BoundingBox(
+              first.boundingBox.left,
+              second.boundingBox.right,
+              first.boundingBox.top min second.boundingBox.top,
+              first.boundingBox.bottom min second.boundingBox.bottom)
+        case On(under,over) => {
+          BoundingBox(
+              under.boundingBox.left min over.boundingBox.left,
+              under.boundingBox.right min over.boundingBox.right,
+              under.boundingBox.top min over.boundingBox.top,
+              under.boundingBox.bottom min over.boundingBox.bottom)
+        }
+      }
+    }
     
     def draw(canvas: Canvas, stroke: Stroke = defaultStroke): Unit = {
       val centreX = 0
@@ -53,6 +84,7 @@ object Image {
           canvas.endPath()
           canvas.setStroke(stroke)
           canvas.stroke()
+          //TODO: Fill with colour
 
         }
         case Rectangle(width, height) => {
@@ -67,15 +99,20 @@ object Image {
           canvas.endPath()
           canvas.setStroke(stroke)
           canvas.stroke()
+          // TODO: Fill with colour
         }
         case Above(above,below) => {
-          ???
+          below.boundingBox.top
+          // TODO: Write method for placing shape above
         }
         case Beside(left, right) => {
-          ???
+          left.boundingBox.right
+          // TODO: Write method for placing shape beside
         }
-        case On(top, botom) => {
-          ???
+        case On(top, bottom) => {
+          bottom.draw(canvas)
+          top.draw(canvas)
+          // TODO: Write method for placing shape on top
         }
       }
     }
@@ -83,8 +120,8 @@ object Image {
     // A helper method you will probably want
     def draw(canvas: Canvas, originX: Double, originY: Double): Unit =
       ???
+    
 
-    // Need bounding box
   }
   
   final case class Circle(radius: Double) extends Image
