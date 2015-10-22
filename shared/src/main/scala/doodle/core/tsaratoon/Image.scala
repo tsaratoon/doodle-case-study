@@ -7,6 +7,7 @@ import doodle.core.Line.Join
 import doodle.core.Stroke
 
 object Image {
+  
   sealed trait Image {
     def on(that: Image): Image =
       On(this, that)
@@ -25,26 +26,27 @@ object Image {
       ???
   
     def draw(canvas: Canvas): Unit = {
+      val centreX = 0
+      val centreY = 0
+      canvas.setOrigin(centreX, centreY)
       this match {
         case Circle(radius) => {
           val c = 0.551915024494
           val cR = c * radius
-          val centerX = 0.0
-          val centerY = 0.0
           canvas.beginPath()
-          canvas.moveTo(centerX, centerY + radius)
-          canvas.bezierCurveTo(centerX + cR, centerY + radius,
-            centerX + radius, centerY + cR,
-            centerX + radius, centerY)
-          canvas.bezierCurveTo(centerX + radius, centerY - cR,
-            centerX + cR, centerY - radius,
-            centerX, centerY - radius)
-          canvas.bezierCurveTo(centerX - cR, centerY - radius,
-            centerX - radius, centerY - cR,
-            centerX - radius, centerY)
-          canvas.bezierCurveTo(centerX - radius, centerY + cR,
-            centerX - cR, centerY + radius,
-            centerX, centerY + radius)
+          canvas.moveTo(centreX, centreY + radius)
+          canvas.bezierCurveTo(centreX + cR, centreY + radius,
+            centreX + radius, centreY + cR,
+            centreX + radius, centreY)
+          canvas.bezierCurveTo(centreX + radius, centreY - cR,
+            centreX + cR, centreY - radius,
+            centreX, centreY - radius)
+          canvas.bezierCurveTo(centreX - cR, centreY - radius,
+            centreX - radius, centreY - cR,
+            centreX - radius, centreY)
+          canvas.bezierCurveTo(centreX - radius, centreY + cR,
+            centreX - cR, centreY + radius,
+            centreX, centreY + radius)
           canvas.endPath()
 
         }
