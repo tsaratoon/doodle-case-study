@@ -1,6 +1,10 @@
 package doodle.core.tsaratoon
 
 import doodle.backend.Canvas
+import doodle.core.Color
+import doodle.core.Line.Cap
+import doodle.core.Line.Join
+import doodle.core.Stroke
 
 object Image {
   sealed trait Image {
@@ -13,8 +17,12 @@ object Image {
     def beside(that: Image): Image =
       Beside(this, that)
       
-    def stroke(width: Double): Image = 
-      Stroke(width)
+    def stroke(width: Double, color: Color, cap: Cap, join: Join): Image = 
+      ???
+      //Stroke(width, color, cap, join)
+      
+    def fill(color: Color): Image = 
+      ???
   
     def draw(canvas: Canvas): Unit =
       ??? // structural recursion
@@ -31,6 +39,5 @@ object Image {
   final case class Above(above: Image, below: Image) extends Image
   final case class Beside(left: Image, right: Image) extends Image
   final case class On(top: Image, bottom: Image) extends Image
-  final case class Stroke(width: Double) extends Image
   
 }
