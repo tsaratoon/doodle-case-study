@@ -26,11 +26,48 @@ object Image {
   
     def draw(canvas: Canvas): Unit = {
       this match {
-        case Circle(radius) => ???
-        case Rectangle(width, height) => ???
-        case Above(above,below) => ???
-        case Beside(left, right) => ???
-        case On(top, botom) => ???
+        case Circle(radius) => {
+          val c = 0.551915024494
+          val cR = c * radius
+          val centerX = 0.0
+          val centerY = 0.0
+          canvas.beginPath()
+          canvas.moveTo(centerX, centerY + radius)
+          canvas.bezierCurveTo(centerX + cR, centerY + radius,
+            centerX + radius, centerY + cR,
+            centerX + radius, centerY)
+          canvas.bezierCurveTo(centerX + radius, centerY - cR,
+            centerX + cR, centerY - radius,
+            centerX, centerY - radius)
+          canvas.bezierCurveTo(centerX - cR, centerY - radius,
+            centerX - radius, centerY - cR,
+            centerX - radius, centerY)
+          canvas.bezierCurveTo(centerX - radius, centerY + cR,
+            centerX - cR, centerY + radius,
+            centerX, centerY + radius)
+          canvas.endPath()
+
+        }
+        case Rectangle(width, height) => {
+          val centerX = 0.0
+          val centerY = 0.0
+          canvas.beginPath()
+          canvas.moveTo(centerX - width/2, centerY + height/2)
+          canvas.lineTo(centerX - width/2, centerY - height/2)
+          canvas.lineTo(centerX + width/2, centerY - height/2)
+          canvas.lineTo(centerX + width/2, centerY + height/2)
+          canvas.lineTo(centerX - width/2, centerY + height/2)
+          canvas.endPath()
+        }
+        case Above(above,below) => {
+          ???
+        }
+        case Beside(left, right) => {
+          ???
+        }
+        case On(top, botom) => {
+          ???
+        }
       }
     }
   
