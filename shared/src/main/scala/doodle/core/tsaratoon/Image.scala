@@ -24,8 +24,15 @@ object Image {
     def fill(color: Color): Image = 
       ???
   
-    def draw(canvas: Canvas): Unit =
-      ??? // structural recursion
+    def draw(canvas: Canvas): Unit = {
+      this match {
+        case Circle(radius) => ???
+        case Rectangle(width, height) => ???
+        case Above(above,below) => ???
+        case Beside(left, right) => ???
+        case On(top, botom) => ???
+      }
+    }
   
     // A helper method you will probably want
     def draw(canvas: Canvas, originX: Double, originY: Double): Unit =
