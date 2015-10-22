@@ -5,6 +5,7 @@ import doodle.core.Color
 import doodle.core.Line.Cap
 import doodle.core.Line.Join
 import doodle.core.Stroke
+import doodle.core.Line
 
 object Image {
   
@@ -25,7 +26,9 @@ object Image {
     def fill(color: Color): Image = 
       ???
   
-    def draw(canvas: Canvas): Unit = {
+    val defaultStroke = Stroke(3.0, Color.black, Line.Cap.Round, Line.Join.Round)
+    
+    def draw(canvas: Canvas, stroke: Stroke = defaultStroke): Unit = {
       val centreX = 0
       val centreY = 0
       canvas.setOrigin(centreX, centreY)
@@ -48,6 +51,8 @@ object Image {
             centreX - cR, centreY + radius,
             centreX, centreY + radius)
           canvas.endPath()
+          canvas.setStroke(stroke)
+          canvas.stroke()
 
         }
         case Rectangle(width, height) => {
@@ -60,6 +65,8 @@ object Image {
           canvas.lineTo(centerX + width/2, centerY + height/2)
           canvas.lineTo(centerX - width/2, centerY + height/2)
           canvas.endPath()
+          canvas.setStroke(stroke)
+          canvas.stroke()
         }
         case Above(above,below) => {
           ???
