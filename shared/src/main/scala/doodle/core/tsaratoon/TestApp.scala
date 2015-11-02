@@ -1,8 +1,10 @@
-package doodle.core.tsaratoon
+package doodle.core.tsaratoon.DoodleImages
 
 import doodle.jvm.Java2DCanvas
-import doodle.core._
-import doodle.core.tsaratoon.Image._
+import doodle.core.tsaratoon.Image.Circle
+import doodle.core.tsaratoon.Image.Rectangle
+import doodle.core.tsaratoon.Image.Beside
+
 
 object TestApp extends App{
   

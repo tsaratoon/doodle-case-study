@@ -1,12 +1,8 @@
 package doodle.core.tsaratoon
 
-import doodle.backend.Canvas
-import doodle.core.Color
-import doodle.core.Line.Cap
-import doodle.core.Line.Join
-import doodle.core.Stroke
-import doodle.core.Line
-import doodle.core.tsaratoon.BoundingBox
+import doodle.core._
+import doodle.backend._
+
 
 object Image {
   
@@ -20,13 +16,6 @@ object Image {
   
     def beside(that: Image): Image =
       Beside(this, that)
-      
-    def stroke(width: Double, color: Color, cap: Cap, join: Join): Image = 
-      ???
-      //Stroke(width, color, cap, join)
-      
-    def fill(color: Color): Image = 
-      ???
   
     val defaultStroke = Stroke(3.0, Color.black, Line.Cap.Round, Line.Join.Round)
     val defaultFill = Color.black
@@ -102,11 +91,11 @@ object Image {
           // TODO: Fill with colour
         }
         case Above(above,below) => {
-          below.boundingBox.top
+          ???
           // TODO: Write method for placing shape above
         }
         case Beside(left, right) => {
-          left.boundingBox.right
+          ???
           // TODO: Write method for placing shape beside
         }
         case On(top, bottom) => {

@@ -1,10 +1,7 @@
 package doodle.core.tsaratoon
 
 import doodle.jvm.Java2DCanvas
-import doodle.core.Stroke
-import doodle.core.Color
-import doodle.core.Line
-
+import doodle.core._
 object Dog extends App{
   val canvas = Java2DCanvas.canvas
 
