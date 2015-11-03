@@ -2,7 +2,7 @@ package animations
 
 import doodle.backend.Key
 import doodle.core._
-import doodle.backend.Canvas
+import doodle.backend
 import doodle.jvm.Java2DCanvas
 
 object Example extends App {

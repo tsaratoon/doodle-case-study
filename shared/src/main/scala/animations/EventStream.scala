@@ -2,8 +2,12 @@ package animations
 
 import scala.math
 import doodle.backend.Key
+import scala.collection.mutable
 
 sealed trait EventStream[A] {
+  
+  val events: mutable.ListBuffer[EventStream[A]] =
+    new mutable.ListBuffer()
   
   def map[B](f: A => B): EventStream[B] =
     Map(f)
@@ -14,12 +18,31 @@ sealed trait EventStream[A] {
   def scan[B](seed: B)(f: (A,B) => B): EventStream[B] =
     Scan(seed)(f)
     
-  def createSource(input: List[Key]): EventStream[A] =
-    Source(input)
+  def createSource(): EventStream[A] =
+    Source()
+    
+  def update(event: A): Unit =
+    ???
   
 }
-import doodle.backend.Key
+
+object EventStream {
+  
+  def fromCallbackHandler[A](handler: (A => Unit) => Unit) = {
+    val stream = new Source[A]()
+    handler((event: A) => stream.push(event))
+    stream
+  }
+  
+}
+
+
+
 final case class Map[A, B](f: A => B) extends EventStream[B]
 final case class Join[A, B](left: EventStream[A], right: EventStream[B]) extends EventStream[(A,B)]
 final case class Scan[A, B](seed: B)(f: (A,B) => B) extends EventStream[B]
-final case class Source[A](input: List[Key]) extends EventStream[A]
+final case class Source[A]() extends EventStream[A]{
+  def push(event: A): Unit = {
+    update(event)
+  }
+}
