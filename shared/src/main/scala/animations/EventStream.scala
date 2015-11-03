@@ -21,7 +21,7 @@ sealed trait EventStream[A] {
   def createSource(): EventStream[A] =
     Source()
     
-  def update(event: A): Unit =
+  def update(in: A): Unit =
     ???
   
 }
@@ -38,7 +38,10 @@ object EventStream {
 
 
 
-final case class Map[A, B](f: A => B) extends EventStream[B]
+final case class Map[A, B](f: A => B) extends EventStream[B] {
+  def observe(in: A): Unit =
+    update(f(in))
+}
 final case class Join[A, B](left: EventStream[A], right: EventStream[B]) extends EventStream[(A,B)]
 final case class Scan[A, B](seed: B)(f: (A,B) => B) extends EventStream[B]
 final case class Source[A]() extends EventStream[A]{
