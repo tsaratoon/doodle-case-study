@@ -4,6 +4,15 @@ import scala.math
 import doodle.backend.Key
 import scala.collection.mutable
 
+sealed trait Listener[A] extends EventStream[A] {
+  def push(in: A): Unit =
+    this match {
+      case m @ Map(f) => m.listeners.foreach(i => i.push(f(in))
+      case j @ Join(l,r) => ???
+      case s @ Scan(seed, f) => s.listeners.foreach(i => i.push(f(in))
+    }
+}
+
 sealed trait EventStream[A] {
   
   val listeners: mutable.ListBuffer[EventStream[A]] =
@@ -40,8 +49,6 @@ object EventStream {
   }
   
 }
-
-
 
 final case class Map[A, B](f: A => B) extends EventStream[B] {
   def push(in: A): Unit =
