@@ -4,39 +4,43 @@ import scala.math
 import doodle.backend.Key
 import scala.collection.mutable
 
-sealed trait Listener[A] extends EventStream[A] {
-  def push(in: A): Unit =
+sealed trait Listener[A]{
+  
+  def listen(in: A): Unit =
     this match {
-      case m @ Map(f) => m.listeners.foreach(i => i.push(f(in))
-      case j @ Join(l,r) => ???
-      case s @ Scan(seed, f) => s.listeners.foreach(i => i.push(f(in))
+      case m @ Map(f) => m.listeners.foreach(i => i.listen(f(in)))
+//      case j @ Join(l,r) => ???
+      case s @ Scan(seed, f) => s.listeners.foreach(i => i.listen(f(in, seed)))
     }
+  
 }
 
 sealed trait EventStream[A] {
   
-  val listeners: mutable.ListBuffer[EventStream[A]] =
+  val listeners: mutable.ListBuffer[Listener[A]] =
     new mutable.ListBuffer()
   
   def map[B](f: A => B): EventStream[B] = {
     val node = Map(f)
-    
-    listeners += (node)
-    
+    listeners += node
     node
   }
     
   def join[B](that: EventStream[B]): EventStream[(A,B)] =
-    Join(this, that)
+//    Join(this, that)
+    ???
   
-  def scan[B](seed: B)(f: (A,B) => B): EventStream[B] =
-    Scan(seed)(f)
+  def scan[B](seed: B)(f: (A,B) => B): EventStream[B] = {
+    val node = Scan(seed,f)
+    listeners += node
+    node
+  }
     
   def createSource(): EventStream[A] =
     Source()
     
   def transmit(in: A): Unit =
-    listeners.foreach(_.push(in))
+    listeners.foreach(_.listen(in))
   
 }
 
@@ -50,14 +54,19 @@ object EventStream {
   
 }
 
-final case class Map[A, B](f: A => B) extends EventStream[B] {
+final case class Map[A, B](f: A => B) extends Listener[A] with EventStream[B] {
   def push(in: A): Unit =
     transmit(f(in))
 }
-final case class Join[A, B](left: EventStream[A], right: EventStream[B]) extends EventStream[(A,B)]
-final case class Scan[A, B](seed: B)(f: (A,B) => B) extends EventStream[B]
-final case class Source[A]() extends EventStream[A]{
+
+final case class Join[A, B](left: EventStream[A], right: EventStream[B]) extends Listener[(A,B)] with EventStream[(A,B)]
+
+final case class Scan[A, B](seed: B, f: (A,B) => B) extends Listener[A] with EventStream[B]
+
+final case class Source[A]() extends Listener[A] with EventStream[A] {
+  
   def push(event: A): Unit = {
     transmit(event)
   }
+  
 }

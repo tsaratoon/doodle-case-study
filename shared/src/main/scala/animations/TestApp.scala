@@ -8,11 +8,14 @@ import doodle.core.Vec
 
 object TestApp extends App {
   
-    // Simple test 1
+  // Simple test
   val source = Source[Int]()
-  val timesTen = source.map( _ * 10 )
-  source.join(timesTen).map{case (l,r) => println(l+r)}
   List(1,2,3,4).foreach(source.push)
+  println(source)
+  
+  // Simple test for map
+//  val timesTen = source.map( i => println(i) )
+//  source.join(timesTen).map{case (l,r) => println(l+r)}
   
 //  val canvas = Java2DCanvas.canvas
 //  
