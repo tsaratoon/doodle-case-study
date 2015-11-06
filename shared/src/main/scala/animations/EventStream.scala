@@ -9,7 +9,7 @@ sealed trait Listener[A]{
   def listen(in: A): Unit =
     this match {
       case m @ Map(f) => m.listeners.foreach(i => i.listen(f(in)))
-//      case j @ Join(l,r) => ???
+//      case j @ Join(l,r) => j
       case s @ Scan(seed, f) => s.listeners.foreach(i => i.listen(f(in, seed)))
     }
   
@@ -26,9 +26,12 @@ sealed trait EventStream[A] {
     node
   }
     
-  def join[B](that: EventStream[B]): EventStream[(A,B)] =
-//    Join(this, that)
-    ???
+  def join[B](that: EventStream[B]): EventStream[(A,B)] = {
+    val node = Join(this, that)
+    this.listeners += node.left
+    that.listeners += node.right
+    node
+  }
   
   def scan[B](seed: B)(f: (A,B) => B): EventStream[B] = {
     val node = Scan(seed,f)
@@ -49,9 +52,9 @@ sealed trait EventStream[A] {
 
 object EventStream {
   def fromCallbackHandler[A](handler: (A => Unit) => Unit) = {
-    val stream = new Source[A]()
-    handler((event: A) => stream.push(event))
-    stream
+    val node = new Source[A]()
+    handler((event: A) => node.push(event))
+    node
   }
 }
 
