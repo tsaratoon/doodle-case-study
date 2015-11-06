@@ -9,9 +9,12 @@ import doodle.core.Vec
 object TestApp extends App {
   
   // Simple test
-  val source = Source[Int]()
-  List(1,2,3,4).foreach(source.push)
-  println(source)
+//  val source = Source[Int]()
+//  List(1,2,3,4).foreach(source.push)
+//  println(source)
+  
+  val source = Source[Int]().createSource(List(1,2,3,4))
+  println(source.listeners)
   
   // Simple test for map
 //  val timesTen = source.map( i => println(i) )

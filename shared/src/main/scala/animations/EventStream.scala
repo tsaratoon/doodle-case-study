@@ -36,8 +36,11 @@ sealed trait EventStream[A] {
     node
   }
     
-  def createSource(): EventStream[A] =
-    Source()
+  def createSource(list: List[A]): EventStream[A] = {
+    val source = Source[A]()
+    list.foreach(i => source.push(i))
+    source
+  }
     
   def transmit(in: A): Unit =
     listeners.foreach(_.listen(in))
@@ -45,13 +48,11 @@ sealed trait EventStream[A] {
 }
 
 object EventStream {
-  
   def fromCallbackHandler[A](handler: (A => Unit) => Unit) = {
     val stream = new Source[A]()
     handler((event: A) => stream.push(event))
     stream
   }
-  
 }
 
 final case class Map[A, B](f: A => B) extends Listener[A] with EventStream[B] {
@@ -64,9 +65,7 @@ final case class Join[A, B](left: EventStream[A], right: EventStream[B]) extends
 final case class Scan[A, B](seed: B, f: (A,B) => B) extends Listener[A] with EventStream[B]
 
 final case class Source[A]() extends Listener[A] with EventStream[A] {
-  
   def push(event: A): Unit = {
     transmit(event)
   }
-  
 }
