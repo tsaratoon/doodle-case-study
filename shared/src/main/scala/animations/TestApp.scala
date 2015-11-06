@@ -1,20 +1,13 @@
 package animations
 
-import doodle.jvm.Java2DCanvas
-import doodle.backend.Key
-import doodle.core.Circle
-import doodle.core.Color
-import doodle.core.Vec
-
 object TestApp extends App {
   
   // Simple test
-//  val source = Source[Int]()
-//  List(1,2,3,4).foreach(source.push)
-//  println(source)
+  val example = Example
   
-  val source = Source[Int]().createSource(List(1,2,3,4))
-  println(source.listeners)
+  example.go
+  
+  
   
   // Simple test for map
 //  val timesTen = source.map( i => println(i) )
