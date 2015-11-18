@@ -3,14 +3,15 @@ package doodle.examples
 import doodle.backend.Key
 import doodle.core._
 import doodle.event._
+import doodle.syntax.eventStreamImage._ 
 
 object Ufo {
   // To run
   // Open sbt console
   // val canvas = Java2DCanvas.canvas
   // Ufo.go(canvas)
-  def go(canvas: doodle.backend.Canvas): Unit = {
-    canvas.setSize(600, 600)
+  def go(implicit canvas: doodle.backend.Canvas): Unit = {
+//    canvas.setSize(600, 600)
 
     val redraw = Canvas.animationFrameEventStream(canvas)
     val keys = Canvas.keyDownEventStream(canvas)
@@ -34,6 +35,11 @@ object Ufo {
       map(location => Vec(location.x.min(300).max(-300), location.y.min(300).max(-300)))
 
     val frames = location.map(location => ufo at location)
-    Canvas.animate(canvas, frames)
+    
+    // Instead of 
+//    Canvas.animate(canvas, frames)
+    // we can now do
+    frames.animate
+    
   }
 }

@@ -2,6 +2,7 @@ package doodle
 package backend
 
 import doodle.core.{Color, Stroke}
+import doodle.jvm.Java2DCanvas
 
 /**
   * A canvas interface abstracts over the different vector drawing libraries we

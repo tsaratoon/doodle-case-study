@@ -41,9 +41,9 @@ sealed trait Image {
     */
   val boundingBox: BoundingBox =
     BoundingBox(this)
-
-  /** Utility function */
-  def draw(canvas: Canvas): Unit =
+    
+  /** Utility function */    
+  def draw(implicit canvas: Canvas): Unit =
     draw(canvas, DrawingContext.whiteLines, Vec.zero)
 
   def draw(canvas: Canvas, context: DrawingContext, origin: Vec): Unit = {
