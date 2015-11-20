@@ -7,7 +7,7 @@ trait Scanable[F[_]] {
 }
 object Scanable {
   implicit object listInstances extends Scanable[List] {
-    def scanLeft[A, B](fa: List[A])(b: B)(f: (A, B) => B): List[B] =
+    def scanLeft[A, B](fa: List[A])(b: B)(f: (B, A) => B): List[B] =
       fa.scanLeft(b)(f)
   }
 }

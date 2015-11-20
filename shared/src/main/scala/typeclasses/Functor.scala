@@ -6,7 +6,7 @@ trait Functor[F[_]] {
   def map[A,B](in: F[A])(f: A => B): F[B]  
 }
 object Functor {  
-  implicit object listInstances extends Functor[List] {    
+  implicit object listInstances extends Functor[List]{    
     def map[A, B](in: List[A])(f: A => B): List[B] =
       in.map(f)
     def flatMap[A, B](fa: List[A])(f: A => List[B]): List[B] =
