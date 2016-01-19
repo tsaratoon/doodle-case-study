@@ -18,10 +18,10 @@ object Canvas {
     stream
   }
 
-//  def animate(canvas: backend.Canvas, frames: EventStream[Image]) =
-//    frames.map(frame => {
-//                 canvas.clear(Color.black)
-//                 frame.draw(canvas)
-//               })
+  def animate(canvas: backend.Canvas, frames: EventStream[Image]) =
+    frames.map(frame => {
+                 canvas.clear(Color.black)
+                 frame.draw(canvas)
+               })
   
 }
