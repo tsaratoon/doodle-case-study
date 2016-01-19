@@ -30,17 +30,18 @@ sealed trait EventStream[A] {
     }
 }
 object EventStream {
-  implicit object eventStreamInstances extends Functor[EventStream] with Applicative[EventStream] with Monad[EventStream] with Scanable[EventStream]{
-    def map[A, B](in: EventStream[A])(f: A => B): EventStream[B] =
-      in.map(f)
-    def flatMap[A, B](fa: EventStream[A])(f: A => EventStream[B]): EventStream[B] =
-      fa.flatMap(f)
-    def point[A](a: A): EventStream[A] =
-      EventStream(a)
-    def zip[A, B](fa: EventStream[A])(fb: EventStream[B]): EventStream[(A, B)] =
-      fa.zip(fb)
-    def scanLeft[A, B](fa: EventStream[A])(b: B)(f: (B, A) => B): EventStream[B] =
-      fa.scanLeft(b)(f)
+  implicit object eventStreamInstances {
+//  implicit object eventStreamInstances extends Functor[EventStream] with Applicative[EventStream] with Monad[EventStream] with Scanable[EventStream]{
+//    def map[A, B](in: EventStream[A])(f: A => B): EventStream[B] =
+//      in.map(f)
+//    def flatMap[A, B](fa: EventStream[A])(f: A => EventStream[B]): EventStream[B] =
+//      fa.flatMap(f)
+//    def point[A](a: A): EventStream[A] =
+//      EventStream(a)
+//    def zip[A, B](fa: EventStream[A])(fb: EventStream[B]): EventStream[(A, B)] =
+//      fa.zip(fb)
+//    def scanLeft[A, B](fa: EventStream[A])(b: B)(f: (B, A) => B): EventStream[B] =
+//      fa.scanLeft(b)(f)
   }
   
   def streamAndCallback[A](): (A => Unit, EventStream[A]) = {
